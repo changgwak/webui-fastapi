@@ -1,0 +1,155 @@
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    margin-top: 50px;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.tab {
+    overflow: hidden;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.tab button {
+    background-color: #f9f9f9;
+    float: left;
+    border: 1px solid #ddd;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    border-radius: 8px 8px 0 0;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+.tabcontent {
+    display: none;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+table.data {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    margin-top: 20px;
+}
+
+table.data th, table.data td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 12px;
+    font-size: 15px;
+}
+
+table.data th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #555;
+}
+
+table.data tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover effect on table rows */
+table.data tbody tr:hover {
+    background-color: #e6f7ff;
+    transition: background-color 0.3s;
+}
+
+/* Button Styling */
+#refreshButton, #downloadCSVButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+#refreshButton i, #downloadCSVButton i {
+    margin-right: 8px;
+}
+
+#refreshButton:hover, #downloadCSVButton:hover {
+    background-color: #45a049;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Aligning the search input to the right */
+div.dataTables_filter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+div.dataTables_filter input {
+    margin-left: 10px;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+/* Shadows and depth */
+#table-wrapper {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Container for the refresh button */
+#table-controls {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Font styling */
+h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 15px;
+}

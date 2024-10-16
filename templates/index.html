@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <!-- jQuery (DataTables는 jQuery 기반임) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="/static/script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Monitoring Dashboard</h1>
+
+        <!-- Tab navigation -->
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Sample1')">Sample 1</button>
+            <button class="tablinks" onclick="openTab(event, 'Sample2')">Sample 2</button>
+            <button class="tablinks" onclick="openTab(event, 'Sample3')">Sample 3</button>
+        </div>
+
+        <!-- Tab content for Sample 1 -->
+        <div id="Sample1" class="tabcontent">
+            <h2>Sample 1: Data Table</h2>
+            <div id="table-wrapper">
+                <div id="table-controls">
+                    <button id="refreshButton">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button id="downloadCSVButton">
+                        <i class="fas fa-file-csv"></i> Download CSV
+                    </button>
+                </div>
+                <div id="table">
+                    <table id="dataTable" class="data">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Passed</th>
+                                <th>Status</th> <!-- Add Status column -->
+                                <th>Complete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab content for Sample 2 -->
+        <div id="Sample2" class="tabcontent">
+            <h2>Sample 2: Placeholder Content</h2>
+            <p>Content for Sample 2 goes here...</p>
+        </div>
+
+        <!-- Tab content for Sample 3 -->
+        <div id="Sample3" class="tabcontent">
+            <h2>Sample 3: Placeholder Content</h2>
+            <p>Content for Sample 3 goes here...</p>
+        </div>
+    </div>
+
+    <!-- DataTables 적용 스크립트 -->
+    <script>
+        $(document).ready(function() {
+            var table = $('#dataTable').DataTable();
+
+            // Function to update table with new data
+            function updateTable(data) {
+                table.clear(); // Clear existing data
+
+                // Add new rows based on data
+                data.forEach(function(item) {
+                    var statusIcon = item.Complete ? '<i class="fas fa-circle" style="color: green;"></i>' : '<i class="fas fa-circle" style="color: red;"></i>';
+                    var completeCheckbox = `<input type='checkbox' class='complete-checkbox' ${item.Complete ? "checked" : ""}>`;
+
+                    table.row.add([
+                        item.ID,
+                        item.Name,
+                        item.Score,
+                        item.Passed,
+                        statusIcon,
+                        completeCheckbox
+                    ]);
+                });
+
+                table.draw(); // Redraw table with new data
+            }
+
+            // Fetch data from the backend
+            function fetchData() {
+                $.ajax({
+                    url: "/data",
+                    success: function(response) {
+                        updateTable(response.data); // Update table with the new data
+                    }
+                });
+            }
+
+            // Refresh button functionality
+            $("#refreshButton").click(function() {
+                fetchData(); // Fetch new data and update the table
+            });
+
+            // Load initial data when page loads
+            fetchData();
+
+            // Event listener for checkbox state change
+            $(document).on('change', ".complete-checkbox", function() {
+                var statusCell = $(this).closest("tr").find("td").eq(4);
+                if (this.checked) {
+                    statusCell.html('<i class="fas fa-circle" style="color: green;"></i>');
+                } else {
+                    statusCell.html('<i class="fas fa-circle" style="color: red;"></i>');
+                }
+            });
+
+            // Function to download table as CSV
+            function downloadTableAsCSV(filename) {
+                var csv = [];
+                var rows = document.querySelectorAll("table tr");
+
+                // Iterate over each row
+                for (var i = 0; i < rows.length; i++) {
+                    var row = [], cols = rows[i].querySelectorAll("td, th");
+
+                    // Iterate over each column (cell)
+                    for (var j = 0; j < cols.length; j++) {
+                        // Check if this is the "Complete" column with checkboxes
+                        if (cols[j].querySelector("input[type='checkbox']")) {
+                            row.push(cols[j].querySelector("input").checked ? "1" : "0");
+                        } else {
+                            row.push(cols[j].innerText); // Push the text for normal columns
+                        }
+                    }
+
+                    csv.push(row.join(",")); // Join the row data by commas
+                }
+
+                // Create a link element, trigger download
+                var csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+                var downloadLink = document.createElement("a");
+                downloadLink.download = filename;
+                downloadLink.href = window.URL.createObjectURL(csvFile);
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+            }
+
+            // Attach click event to Download CSV button
+            $("#downloadCSVButton").click(function() {
+                downloadTableAsCSV('table_data.csv');
+            });
+
+        });
+    </script>
+</body>
+</html>
