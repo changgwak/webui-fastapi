@@ -20,7 +20,7 @@ realtime update tab
 interface with ros2 tab
 
 # Current UI
-![UI](https://github.com/changgwak/webui-fastapi/tree/master/imgs/ui.png)
+![UI](https://github.com/changgwak/webui-fastapi/blob/master/imgs/ui.png)
 
 
 
